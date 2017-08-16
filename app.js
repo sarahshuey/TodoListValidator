@@ -15,9 +15,8 @@ app.set('views', './views')
 app.set('view engine', 'mustache')
 
 const todos = [
-  "Finish Daily Project",
-  "Feed Dogs",
-  "Cook Dinner"
+  { name: "Finish Daily Project", done: false, id: 1},
+  {name: "Feed the Dogs", done: true, id:2}
 ];
 const completedTODO = [];
 app.get("/", function(req, res) {
@@ -28,19 +27,23 @@ app.get("/", function(req, res) {
 
 app.post("/", function(req, res) {
   const addtodo = req.body.newtodo;
-  todos.push(addtodo);
+  let max = 0
+  for (var i = 0; i < todos.length; i++) {
+    if (max < todos[i].id){
+      max = todos[i].id
+    }
+  }
+  let todo = {name: addtodo, done: false, id: max+1}
+  todos.push(todo);
   res.redirect('/');
 });
 
-app.post("/completed", function(req, res) {
+app.post("/{{id}}", function(req, res) {
   console.log('button pushed');
   const completetodo = req.body.completebutton;
   completedTODO.push(completetodo);
   res.redirect('/');
 });
-
-
-
 
 app.listen(3000, function() {
   console.log('Successfully started express appslication!');
