@@ -38,8 +38,9 @@ app.post("/", function(req, res) {
   res.redirect('/');
 });
 
-app.post("/{{id}}", function(req, res) {
+app.post("/:id", function(req, res) {
   console.log('button pushed');
+  let id = req.params.id
   const completetodo = req.body.completebutton;
   completedTODO.push(completetodo);
   res.redirect('/');
